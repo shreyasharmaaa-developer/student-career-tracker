@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Career Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>🎓 Student Career Tracker</h1>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+
+        <div class="card">
+            <h2 id="totalStudents">0</h2>
+            <p>Total Students</p>
+        </div>
+
+        <div class="card">
+            <h2 id="placedStudents">0</h2>
+            <p>Placed</p>
+        </div>
+
+        <div class="card">
+            <h2 id="notPlacedStudents">0</h2>
+            <p>Not Placed</p>
+        </div>
+
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-container">
+        <h3>Placement Progress</h3>
+
+        <div class="progress-bar">
+            <div id="progress"></div>
+        </div>
+
+        <span id="percentage">0%</span>
+    </div>
+
+    <!-- Dark Mode -->
+    <button id="darkModeBtn">🌙 Dark Mode</button>
+
+    <!-- Form -->
+    <div class="form-container">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Student Name"
+        >
+
+        <input
+            type="text"
+            id="skill"
+            placeholder="Skill"
+        >
+
+        <select id="status">
+            <option value="Placed">Placed</option>
+            <option value="Not Placed">Not Placed</option>
+        </select>
+
+        <button onclick="addStudent()">
+            Add Student
+        </button>
+
+    </div>
+
+    <!-- Search -->
+    <input
+        type="text"
+        id="search"
+        placeholder="Search Student..."
+        onkeyup="searchStudent()"
+    >
+
+    <!-- Table -->
+    <table>
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Skill</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentList"></tbody>
+
+    </table>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
