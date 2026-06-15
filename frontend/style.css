@@ -6,20 +6,20 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #f0f2f5;
-    color: #1a1a2e;
+    background: #efefef;
+    color: #b9b9ca;
     min-height: 100vh;
     transition: all 0.3s ease;
 }
 
 body.dark {
     background: #0f0f1a;
-    color: #e0e0e0;
+    color: #683535;
 }
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(135deg, #6c63ff, #3f3d8f);
+    background: linear-gradient(135deg, #6c63ff, #5856d4);
     padding: 16px 32px;
     display: flex;
     justify-content: space-between;
@@ -97,9 +97,9 @@ body.dark .stat-card {
     margin-top: 2px;
 }
 
-.total .stat-info h2 { color: #6c63ff; }
-.placed .stat-info h2 { color: #22c55e; }
-.not-placed .stat-info h2 { color: #f97316; }
+.total .stat-info h2 { color: #222041; }
+.placed .stat-info h2 { color: #56ca80; }
+.not-placed .stat-info h2 { color: #e37424; }
 .percent .stat-info h2 { color: #3b82f6; }
 
 /* Progress */
