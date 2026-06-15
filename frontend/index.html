@@ -6,6 +6,9 @@
     <title>Student Career Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,7 +20,6 @@
 
     <div class="container">
 
-        <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card total">
                 <div class="stat-icon">👥</div>
@@ -49,7 +51,6 @@
             </div>
         </div>
 
-        <!-- Progress Bar -->
         <div class="progress-section">
             <div class="progress-header">
                 <span>Placement Progress</span>
@@ -60,7 +61,6 @@
             </div>
         </div>
 
-        <!-- Charts -->
         <div class="charts-grid">
             <div class="chart-card">
                 <h3>Placement Overview</h3>
@@ -76,7 +76,6 @@
             </div>
         </div>
 
-        <!-- Form + Table -->
         <div class="bottom-grid">
 
             <div class="form-card">
@@ -94,6 +93,12 @@
                     </select>
                 </div>
                 <button class="btn-add" onclick="addStudent()">+ Add Student</button>
+
+                <!-- Export Buttons -->
+                <div class="export-buttons">
+                    <button class="btn-excel" onclick="exportExcel()">📊 Export Excel</button>
+                    <button class="btn-pdf" onclick="exportPDF()">📄 Export PDF</button>
+                </div>
             </div>
 
             <div class="table-card">
@@ -101,6 +106,26 @@
                     <h3>Students</h3>
                     <input type="text" id="search" placeholder="🔍 Search..." onkeyup="searchStudent()">
                 </div>
+
+                <div class="filter-bar">
+                    <select id="filterStatus" onchange="applyFilters()">
+                        <option value="All">All Status</option>
+                        <option value="Placed">✅ Placed</option>
+                        <option value="Not Placed">⏳ Not Placed</option>
+                    </select>
+                    <select id="filterSkill" onchange="applyFilters()">
+                        <option value="All">All Skills</option>
+                    </select>
+                    <select id="sortBy" onchange="applyFilters()">
+                        <option value="default">Sort By</option>
+                        <option value="name-asc">Name A → Z</option>
+                        <option value="name-desc">Name Z → A</option>
+                        <option value="placed-first">Placed First</option>
+                        <option value="not-placed-first">Not Placed First</option>
+                    </select>
+                    <button onclick="resetFilters()">✖ Reset</button>
+                </div>
+
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -117,7 +142,6 @@
             </div>
 
         </div>
-
     </div>
 
     <script src="script.js"></script>

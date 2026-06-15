@@ -14,6 +14,7 @@ async function init() {
         displayStudents();
         updateDashboard();
         renderCharts();
+        populateSkillFilter();
     }
 }
 
@@ -114,9 +115,44 @@ async function editStudent(id) {
 }
 
 function searchStudent() {
-    const searchValue = document.getElementById("search").value.toLowerCase();
-    const filtered = students.filter(s => s.name.toLowerCase().includes(searchValue));
+    applyFilters();
+}
+
+function populateSkillFilter() {
+    const skills = [...new Set(students.map(s => s.skill))].sort();
+    const filterSkill = document.getElementById("filterSkill");
+    filterSkill.innerHTML = `<option value="All">All Skills</option>`;
+    skills.forEach(skill => {
+        filterSkill.innerHTML += `<option value="${skill}">${skill}</option>`;
+    });
+}
+
+function applyFilters() {
+    const statusVal = document.getElementById("filterStatus").value;
+    const skillVal = document.getElementById("filterSkill").value;
+    const sortVal = document.getElementById("sortBy").value;
+    const searchVal = document.getElementById("search").value.toLowerCase();
+
+    let filtered = [...students];
+
+    if (searchVal) filtered = filtered.filter(s => s.name.toLowerCase().includes(searchVal));
+    if (statusVal !== "All") filtered = filtered.filter(s => s.status === statusVal);
+    if (skillVal !== "All") filtered = filtered.filter(s => s.skill === skillVal);
+
+    if (sortVal === "name-asc") filtered.sort((a, b) => a.name.localeCompare(b.name));
+    else if (sortVal === "name-desc") filtered.sort((a, b) => b.name.localeCompare(a.name));
+    else if (sortVal === "placed-first") filtered.sort((a, b) => a.status === "Placed" ? -1 : 1);
+    else if (sortVal === "not-placed-first") filtered.sort((a, b) => a.status === "Not Placed" ? -1 : 1);
+
     displayStudents(filtered);
+}
+
+function resetFilters() {
+    document.getElementById("filterStatus").value = "All";
+    document.getElementById("filterSkill").value = "All";
+    document.getElementById("sortBy").value = "default";
+    document.getElementById("search").value = "";
+    displayStudents(students);
 }
 
 function updateDashboard() {
@@ -137,73 +173,88 @@ function renderCharts() {
     const placed = students.filter(s => s.status === "Placed").length;
     const notPlaced = students.length - placed;
 
-    // Pie Chart
     if (pieChartInstance) pieChartInstance.destroy();
     const pieCtx = document.getElementById("pieChart").getContext("2d");
     pieChartInstance = new Chart(pieCtx, {
         type: "doughnut",
         data: {
             labels: ["Placed", "Not Placed"],
-            datasets: [{
-                data: [placed, notPlaced],
-                backgroundColor: ["#6c63ff", "#f97316"],
-                borderWidth: 0,
-                hoverOffset: 8
-            }]
+            datasets: [{ data: [placed, notPlaced], backgroundColor: ["#6c63ff", "#f97316"], borderWidth: 0, hoverOffset: 8 }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: "bottom",
-                    labels: { padding: 16, font: { family: "Inter", size: 12 } }
-                }
-            }
+            plugins: { legend: { position: "bottom", labels: { padding: 16, font: { family: "Inter", size: 12 } } } }
         }
     });
 
-    // Bar Chart — top skills
     const skillMap = {};
-    students.forEach(s => {
-        skillMap[s.skill] = (skillMap[s.skill] || 0) + 1;
-    });
-
+    students.forEach(s => { skillMap[s.skill] = (skillMap[s.skill] || 0) + 1; });
     const sorted = Object.entries(skillMap).sort((a, b) => b[1] - a[1]).slice(0, 7);
-    const labels = sorted.map(e => e[0]);
-    const data = sorted.map(e => e[1]);
 
     if (barChartInstance) barChartInstance.destroy();
     const barCtx = document.getElementById("barChart").getContext("2d");
     barChartInstance = new Chart(barCtx, {
         type: "bar",
         data: {
-            labels,
-            datasets: [{
-                label: "Students",
-                data,
-                backgroundColor: "#6c63ff",
-                borderRadius: 8,
-                borderSkipped: false
-            }]
+            labels: sorted.map(e => e[0]),
+            datasets: [{ label: "Students", data: sorted.map(e => e[1]), backgroundColor: "#6c63ff", borderRadius: 8, borderSkipped: false }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1, font: { family: "Inter" } },
-                    grid: { color: "rgba(0,0,0,0.05)" }
-                },
-                x: {
-                    ticks: { font: { family: "Inter", size: 11 } },
-                    grid: { display: false }
-                }
+                y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Inter" } }, grid: { color: "rgba(0,0,0,0.05)" } },
+                x: { ticks: { font: { family: "Inter", size: 11 } }, grid: { display: false } }
             }
         }
     });
+}
+
+// ✅ Export to Excel
+function exportExcel() {
+    const data = students.map((s, i) => ({
+        "S.No": i + 1,
+        "Name": s.name,
+        "Skill": s.skill,
+        "Status": s.status
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+    XLSX.writeFile(workbook, "student-career-tracker.xlsx");
+}
+
+// ✅ Export to PDF
+function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.setTextColor(108, 99, 255);
+    doc.text("Student Career Tracker", 14, 18);
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    const total = students.length;
+    const placed = students.filter(s => s.status === "Placed").length;
+    doc.text(`Total: ${total}  |  Placed: ${placed}  |  Not Placed: ${total - placed}  |  Rate: ${Math.round((placed/total)*100)}%`, 14, 26);
+
+    doc.autoTable({
+        startY: 32,
+        head: [["S.No", "Name", "Skill", "Status"]],
+        body: students.map((s, i) => [i + 1, s.name, s.skill, s.status]),
+        styles: { font: "helvetica", fontSize: 10 },
+        headStyles: { fillColor: [108, 99, 255], textColor: 255, fontStyle: "bold" },
+        alternateRowStyles: { fillColor: [245, 245, 255] },
+        columnStyles: {
+            3: { fontStyle: "bold", textColor: (row) => row.raw === "Placed" ? [34, 197, 94] : [249, 115, 22] }
+        }
+    });
+
+    doc.save("student-career-tracker.pdf");
 }
 
 document.getElementById("darkModeBtn").addEventListener("click", () => {
