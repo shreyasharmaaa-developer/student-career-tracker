@@ -214,3 +214,45 @@ td button:hover { opacity: 0.8; }
 @media (max-width: 500px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summary-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+body.dark .summary-box { background: #1e1e30; }
+
+.summary-box h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.88rem;
+}
+
+body.dark .summary-item { border-color: #2d2d45; }
+.summary-item:last-child { border-bottom: none; }
+.summary-item span:first-child { color: #666; }
+body.dark .summary-item span:first-child { color: #aaa; }
+.summary-item span:last-child { font-weight: 700; }
+.placed-stat span:last-child { color: #22c55e; }
+.not-placed-stat span:last-child { color: #f97316; }
+.rate-stat span:last-child { color: #6c63ff; }

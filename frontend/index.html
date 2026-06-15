@@ -78,29 +78,53 @@
 
         <div class="bottom-grid">
 
-            <div class="form-card">
-                <h3>Add Student</h3>
-                <div class="form-group">
-                    <input type="text" id="name" placeholder="Student Name">
-                </div>
-                <div class="form-group">
-                    <input type="text" id="skill" placeholder="Skill (e.g. React, Python)">
-                </div>
-                <div class="form-group">
-                    <select id="status">
-                        <option value="Placed">✅ Placed</option>
-                        <option value="Not Placed">⏳ Not Placed</option>
-                    </select>
-                </div>
-                <button class="btn-add" onclick="addStudent()">+ Add Student</button>
+            <!-- Left Column: Form + Export + Summary -->
+            <div class="left-column">
+                <div class="form-card">
+                    <h3>Add Student</h3>
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Student Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="skill" placeholder="Skill (e.g. React, Python)">
+                    </div>
+                    <div class="form-group">
+                        <select id="status">
+                            <option value="Placed">✅ Placed</option>
+                            <option value="Not Placed">⏳ Not Placed</option>
+                        </select>
+                    </div>
+                    <button class="btn-add" onclick="addStudent()">+ Add Student</button>
 
-                <!-- Export Buttons -->
-                <div class="export-buttons">
-                    <button class="btn-excel" onclick="exportExcel()">📊 Export Excel</button>
-                    <button class="btn-pdf" onclick="exportPDF()">📄 Export PDF</button>
+                    <div class="export-buttons">
+                        <button class="btn-excel" onclick="exportExcel()">📊 Export Excel</button>
+                        <button class="btn-pdf" onclick="exportPDF()">📄 Export PDF</button>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="summary-box">
+                    <h4>Quick Stats</h4>
+                    <div class="summary-item">
+                        <span>Total Students</span>
+                        <span id="s-total">0</span>
+                    </div>
+                    <div class="summary-item placed-stat">
+                        <span>✅ Placed</span>
+                        <span id="s-placed">0</span>
+                    </div>
+                    <div class="summary-item not-placed-stat">
+                        <span>⏳ Not Placed</span>
+                        <span id="s-notplaced">0</span>
+                    </div>
+                    <div class="summary-item rate-stat">
+                        <span>📈 Success Rate</span>
+                        <span id="s-rate">0%</span>
+                    </div>
                 </div>
             </div>
 
+            <!-- Right Column: Table -->
             <div class="table-card">
                 <div class="table-header">
                     <h3>Students</h3>

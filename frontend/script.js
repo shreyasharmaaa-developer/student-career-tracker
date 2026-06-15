@@ -167,6 +167,11 @@ function updateDashboard() {
     document.getElementById("percentageCard").innerText = percentage + "%";
     document.getElementById("progress").style.width = percentage + "%";
     document.getElementById("percentage").innerText = percentage + "%";
+
+    document.getElementById("s-total").innerText = total;
+    document.getElementById("s-placed").innerText = placed;
+    document.getElementById("s-notplaced").innerText = notPlaced;
+    document.getElementById("s-rate").innerText = percentage + "%";
 }
 
 function renderCharts() {
