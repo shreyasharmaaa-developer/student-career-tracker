@@ -4,97 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Career Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>🎓 Student Career Tracker</h1>
+    <nav class="navbar">
+        <div class="nav-brand">🎓 CareerTrack</div>
+        <button id="darkModeBtn">🌙</button>
+    </nav>
 
-    <!-- Dashboard -->
-    <div class="dashboard">
+    <div class="container">
 
-        <div class="card">
-            <h2 id="totalStudents">0</h2>
-            <p>Total Students</p>
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <h2 id="totalStudents">0</h2>
+                    <p>Total Students</p>
+                </div>
+            </div>
+            <div class="stat-card placed">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h2 id="placedStudents">0</h2>
+                    <p>Placed</p>
+                </div>
+            </div>
+            <div class="stat-card not-placed">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-info">
+                    <h2 id="notPlacedStudents">0</h2>
+                    <p>Not Placed</p>
+                </div>
+            </div>
+            <div class="stat-card percent">
+                <div class="stat-icon">📈</div>
+                <div class="stat-info">
+                    <h2 id="percentageCard">0%</h2>
+                    <p>Placement Rate</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2 id="placedStudents">0</h2>
-            <p>Placed</p>
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Placement Progress</span>
+                <span id="percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress"></div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2 id="notPlacedStudents">0</h2>
-            <p>Not Placed</p>
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Placement Overview</h3>
+                <div class="chart-wrapper">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Top Skills</h3>
+                <div class="chart-wrapper">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form + Table -->
+        <div class="bottom-grid">
+
+            <div class="form-card">
+                <h3>Add Student</h3>
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Student Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="skill" placeholder="Skill (e.g. React, Python)">
+                </div>
+                <div class="form-group">
+                    <select id="status">
+                        <option value="Placed">✅ Placed</option>
+                        <option value="Not Placed">⏳ Not Placed</option>
+                    </select>
+                </div>
+                <button class="btn-add" onclick="addStudent()">+ Add Student</button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Students</h3>
+                    <input type="text" id="search" placeholder="🔍 Search..." onkeyup="searchStudent()">
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Skill</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentList"></tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
     </div>
-
-    <!-- Progress -->
-    <div class="progress-container">
-        <h3>Placement Progress</h3>
-
-        <div class="progress-bar">
-            <div id="progress"></div>
-        </div>
-
-        <span id="percentage">0%</span>
-    </div>
-
-    <!-- Dark Mode -->
-    <button id="darkModeBtn">🌙 Dark Mode</button>
-
-    <!-- Form -->
-    <div class="form-container">
-
-        <input
-            type="text"
-            id="name"
-            placeholder="Student Name"
-        >
-
-        <input
-            type="text"
-            id="skill"
-            placeholder="Skill"
-        >
-
-        <select id="status">
-            <option value="Placed">Placed</option>
-            <option value="Not Placed">Not Placed</option>
-        </select>
-
-        <button onclick="addStudent()">
-            Add Student
-        </button>
-
-    </div>
-
-    <!-- Search -->
-    <input
-        type="text"
-        id="search"
-        placeholder="Search Student..."
-        onkeyup="searchStudent()"
-    >
-
-    <!-- Table -->
-    <table>
-
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Skill</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-
-        <tbody id="studentList"></tbody>
-
-    </table>
 
     <script src="script.js"></script>
-
 </body>
 </html>
